@@ -9,6 +9,10 @@ export const App = () => {
     navigate("/game");
   };
 
+  const handleRegister = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center font-sans relative overflow-hidden">
       {/* Subtle Background Pattern */}
@@ -78,6 +82,13 @@ export const App = () => {
             <button className="w-full bg-transparent border border-neutral-700 hover:border-neutral-500 text-white font-bold py-4 rounded-xl transition-all active:scale-95">
               CREATE PRIVATE ROOM
             </button>
+
+            <div
+              onClick={handleRegister}
+              className="mt-4 text-white text-center cursor-pointer font-semibold underline underline-offset-4"
+            >
+              Register Here !!!
+            </div>
           </div>
         </div>
 

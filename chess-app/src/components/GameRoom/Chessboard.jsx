@@ -6,7 +6,6 @@ export const ChessBoard = () => {
   const chessGameRef = useRef(new Chess());
   const chessGame = chessGameRef.current;
   const [chessPosition, setChessPosition] = useState(chessGame.fen());
-  console.log("moves", chessGame._turn);
 
   const [turn, setTurn] = useState(chessGame._turn);
 
