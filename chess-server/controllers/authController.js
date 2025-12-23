@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/userModel.js";
+import jwt from "jsonwebtoken";
 
 export const handleLogin = async (req, res) => {
   try {
@@ -28,8 +29,17 @@ export const handleLogin = async (req, res) => {
       });
     }
 
+    const token = jwt.sign(
+      {
+        userId: userExists._id,
+        username: userExists.username,
+      },
+      process.env.JWT_SECRET_KEY
+    );
+
     return res.status(200).json({
       msg: "successfull",
+      token,
     });
   } catch (error) {
     console.log("error", error);
