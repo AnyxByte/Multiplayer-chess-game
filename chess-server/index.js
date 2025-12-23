@@ -1,10 +1,15 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 
 import authRoute from "./routes/authRoute.js";
+import connectDb from "./connectDb.js";
 
 const app = express();
-const port = 3000;
+dotenv.config();
+
+
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +20,8 @@ app.use(
     methods: "GET,PUT,POST,DELETE",
   })
 );
+
+connectDb();
 
 app.get("/", (req, res) => {
   return res.status(200).json({
