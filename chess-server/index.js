@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoute from "./routes/authRoute.js";
+import roomRoute from "./routes/roomRoute.js";
 import connectDb from "./connectDb.js";
 
 const app = express();
@@ -30,6 +31,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoute);
+// do the middleware thingyy to verify the user
+app.use("/room",roomRoute);
 
 app.listen(port, () => {
   console.log("listening on port ", port);
