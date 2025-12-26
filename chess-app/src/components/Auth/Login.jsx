@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
-
   const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const {
     register,
@@ -13,14 +15,28 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const submitHandler = (value) => {
+  const submitHandler = async (value) => {
     console.log("values", value);
-    // try {
-    // make the api call
-    navigate("/");
-    // } catch (error) {
-    //     //error
-    // }
+
+    try {
+      if (isLogin) {
+        const response = await axios.post(`${backendUrl}/auth/login`, value);
+        console.log(response.data, "response ka data");
+        Cookies.set("token", response.data.token);
+        navigate("/");
+      } else {
+        const response = await axios.post(`${backendUrl}/auth/register`, value);
+
+        console.log("response ka data", response.data);
+
+        setIsLogin(true);
+      }
+      alert("success");
+    } catch (error) {
+      //error
+      console.log("error", error);
+      alert("error");
+    }
   };
 
   return (
