@@ -5,10 +5,10 @@ import dotenv from "dotenv";
 import authRoute from "./routes/authRoute.js";
 import roomRoute from "./routes/roomRoute.js";
 import connectDb from "./connectDb.js";
+import auth from "./middlewares/auth.js";
 
 const app = express();
 dotenv.config();
-
 
 const port = process.env.PORT || 3000;
 
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoute);
 // do the middleware thingyy to verify the user
-app.use("/room",roomRoute);
+app.use("/room", auth, roomRoute);
 
 app.listen(port, () => {
   console.log("listening on port ", port);
