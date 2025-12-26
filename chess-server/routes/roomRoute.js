@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create", handleCreateRoom);
+router.get("/create", handleCreateRoom);
 router.post("/join", handleJoinRoom);
 
 export default router;

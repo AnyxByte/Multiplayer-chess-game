@@ -11,10 +11,10 @@ export const handleCreateRoom = async (req, res) => {
     const uniqueNum = generateSixDigitCode();
     const userId = req.user.userId;
 
-    // await Room.create({
-    //   roomCode: uniqueNum,
-    //   createdBy: userId,
-    // });
+    await Room.create({
+      roomCode: uniqueNum,
+      createdBy: userId,
+    });
 
     return res.status(200).json({
       msg: "created successfully",

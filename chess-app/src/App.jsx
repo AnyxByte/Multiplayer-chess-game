@@ -1,16 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import {
+  handleCreateRoom,
+  handleJoinRoom,
+} from "./components/Services/roomService";
+
+import Cookies from "js-cookie";
 
 export const App = () => {
   const [roomCode, setRoomCode] = useState("");
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate("/game");
-  };
+  const [notLoggedIn, setNotLoggedIn] = useState(true);
 
   const handleRegister = () => {
     navigate("/login");
+  };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      setNotLoggedIn(false);
+    } else {
+      setNotLoggedIn(true);
+    }
+  }, [notLoggedIn]);
+
+  const createRoom = () => {
+    handleCreateRoom()
+      .then((res) => {
+        const uniqueNum = res.data.uniqueNum;
+        alert(uniqueNum);
+      })
+      .catch((e) => {
+        alert("error creating room");
+        console.log(e);
+      });
+  };
+
+  const joinRoom = () => {
+    handleJoinRoom(roomCode)
+      .then((res) => {
+        alert(res.data.msg);
+        console.log(res.data);
+      })
+      .catch((e) => {
+        alert("error joining room");
+        console.log(e);
+      });
   };
 
   return (
@@ -63,32 +101,34 @@ export const App = () => {
                 />
               </div>
             </div>
-
             <button
-              onClick={handleNavigate}
+              onClick={joinRoom}
               className="w-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold py-4 rounded-xl transition-all transform active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
             >
               JOIN MATCH
             </button>
-
             {/* Divider */}
             <div className="flex items-center gap-4 py-2">
               <div className="h-px bg-neutral-800 flex-1"></div>
               <span className="text-neutral-600 text-xs font-bold">OR</span>
               <div className="h-px bg-neutral-800 flex-1"></div>
             </div>
-
             {/* Create Room Section */}
-            <button className="w-full bg-transparent border border-neutral-700 hover:border-neutral-500 text-white font-bold py-4 rounded-xl transition-all active:scale-95">
+            <button
+              onClick={createRoom}
+              className="w-full bg-transparent border border-neutral-700 hover:border-neutral-500 text-white font-bold py-4 rounded-xl transition-all active:scale-95"
+            >
               CREATE PRIVATE ROOM
             </button>
 
-            <div
-              onClick={handleRegister}
-              className="mt-4 text-white text-center cursor-pointer font-semibold underline underline-offset-4"
-            >
-              Register Here !!!
-            </div>
+            {notLoggedIn && (
+              <div
+                onClick={handleRegister}
+                className="mt-4 text-white text-center cursor-pointer font-semibold underline underline-offset-4"
+              >
+                Register Here !!!
+              </div>
+            )}
           </div>
         </div>
 
