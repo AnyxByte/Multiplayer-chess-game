@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
+import { createSocket } from "../../socket";
 
 export const ChessBoard = () => {
   const chessGameRef = useRef(new Chess());
@@ -8,6 +9,24 @@ export const ChessBoard = () => {
   const [chessPosition, setChessPosition] = useState(chessGame.fen());
 
   const [turn, setTurn] = useState(chessGame._turn);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const socketRef = useRef();
+
+  useEffect(() => {
+    const socket = createSocket();
+    socketRef.current = socket;
+    socket.connect();
+
+    console.log("socketref", socketRef);
+
+    socket.on("connect", () => {
+      console.log("connected to server");
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   function makeRandomMove() {
     // get all possible moves`
