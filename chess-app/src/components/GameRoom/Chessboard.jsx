@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { createSocket } from "../../socket";
+import { onSuccessHandler } from "../../socket/handlers";
+import { useLocation } from "react-router";
 
 export const ChessBoard = () => {
   const chessGameRef = useRef(new Chess());
@@ -12,16 +14,17 @@ export const ChessBoard = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const socketRef = useRef();
 
+  const location = useLocation();
+  const { roomCode } = location.state;
+
   useEffect(() => {
     const socket = createSocket();
     socketRef.current = socket;
     socket.connect();
 
-    console.log("socketref", socketRef);
+    socket.on("connect", onSuccessHandler);
 
-    socket.on("connect", () => {
-      console.log("connected to server");
-    });
+    socket.emit("join-game", { gameId: roomCode });
 
     return () => {
       socket.disconnect();

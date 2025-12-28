@@ -43,6 +43,7 @@ export const App = () => {
     handleJoinRoom(roomCode)
       .then((res) => {
         alert(res.data.msg);
+        navigate("/game", { state: { roomCode } });
         console.log(res.data);
       })
       .catch((e) => {
