@@ -1,29 +1,38 @@
 import { io } from "../index.js";
 
+function generateRandomIndex() {
+  return Math.floor(Math.random() * 2);
+}
+
 export default function wss(socket) {
   try {
-    console.log("socket id: ", socket.id);
-
     socket.on("join-game", async (data) => {
       const { gameId } = data;
-
-      console.log("gameId: ", gameId);
 
       socket.join(gameId);
 
       const socketsInRoom = await io.in(gameId).fetchSockets();
+      const socketIdsInRoom = socketsInRoom.map((socket) => socket.id);
 
-      console.log("socketsInRoom", socketsInRoom);
+      if (socketIdsInRoom.length > 2) {
+        socketIdsInRoom.pop();
+        socket.leave(gameId);
+      }
+
+      if (socketIdsInRoom.length == 2) {
+        const index = generateRandomIndex();
+
+        io.to(socketIdsInRoom[index]).emit("start-game", { side: "black" });
+        io.to(socketIdsInRoom[1 - index]).emit("start-game", { side: "white" });
+      }
     });
 
-    // const gameId = socket.gameId;
+    socket.on("move", async (data) => {
+      const { gameId, move } = data;
 
-    // socket.join(gameId);
-
-    // io;
-
-    // find all the ids from a particular rooms and then select randomly who gets white and who gets black
-
-    // start game event -> tells which one gets white or black
-  } catch (error) {}
+      socket.to(gameId).emit("opponent-move", move);
+    });
+  } catch (error) {
+    console.error("Socket error:", error);
+  }
 }
