@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
     methods: "GET,PUT,POST,DELETE",
   })
@@ -42,7 +42,7 @@ const httpServer = app.listen(port, () => {
 
 export const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
   },
 });
 
