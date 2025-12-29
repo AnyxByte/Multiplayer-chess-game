@@ -42,10 +42,10 @@ const httpServer = app.listen(port, () => {
 
 export const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL,
+     origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST"],
   },
 });
 
 io.on("connection", wss);
-
-// http://localhost:3000/ -> http server bhi hai and isme ek web socket server bhi hai
