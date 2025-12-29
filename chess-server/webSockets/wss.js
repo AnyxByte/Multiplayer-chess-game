@@ -34,5 +34,6 @@ export default function wss(socket) {
     });
   } catch (error) {
     console.error("Socket error:", error);
+    socket.disconnect();
   }
 }

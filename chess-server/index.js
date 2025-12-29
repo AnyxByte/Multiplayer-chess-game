@@ -12,7 +12,7 @@ import wss from "./webSockets/wss.js";
 const app = express();
 dotenv.config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(
   cors({
@@ -46,5 +46,7 @@ export const io = new Server(httpServer, {
     origin: process.env.CLIENT_URL,
   },
 });
+
+// change this using old project config
 
 io.on("connection", wss);
