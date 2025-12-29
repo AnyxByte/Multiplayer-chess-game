@@ -14,12 +14,14 @@ dotenv.config();
 
 const port = process.env.PORT;
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,9 +42,7 @@ const httpServer = app.listen(port, () => {
 });
 
 const io = new Server(httpServer, {
-  cors: {
-    origin: process.env.CLIENT_URL,
-  },
+  cors: corsOptions,
 });
 
 // change this using old project config
