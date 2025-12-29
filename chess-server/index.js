@@ -42,10 +42,11 @@ const httpServer = app.listen(port, () => {
 
 export const io = new Server(httpServer, {
   cors: {
-     origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL,
     credentials: true,
     methods: ["GET", "POST"],
   },
+  transports: ["websocket", "polling"],
 });
 
 io.on("connection", wss);
