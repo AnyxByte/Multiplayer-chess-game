@@ -14,17 +14,18 @@ dotenv.config();
 
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
-    methods: "GET,PUT,POST,DELETE",
   })
 );
 
-connectDb();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+await connectDb();
 
 app.get("/", (req, res) => {
   return res.status(200).json({
@@ -43,10 +44,7 @@ const httpServer = app.listen(port, () => {
 export const io = new Server(httpServer, {
   cors: {
     origin: process.env.CLIENT_URL,
-    credentials: false,
-    methods: ["GET", "POST"],
   },
-  transports: ["websocket", "polling"],
 });
 
 io.on("connection", wss);
