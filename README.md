@@ -83,6 +83,22 @@ This project demonstrates practical understanding of:
 
 ---
 
+## Environment Variables 
+
+### ServerSide
+```
+MONGO_URI=""
+PORT="3000"
+SALT=10
+JWT_SECRET_KEY="mysecretkey"
+CLIENT_URL=""
+```
+### Client Side
+```
+VITE_BACKEND_URL=""
+```
+---
+
 ## 🧪 How It Works (High-Level)
 
 1. Player creates a room and gets a room code
