@@ -21,7 +21,6 @@ app.use(
   })
 );
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,14 +33,13 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoute);
-// do the middleware thingyy to verify the user
 app.use("/room", auth, roomRoute);
 
 const httpServer = app.listen(port, () => {
   console.log("listening on port ", port);
 });
 
-export const io = new Server(httpServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: process.env.CLIENT_URL,
   },
@@ -49,4 +47,4 @@ export const io = new Server(httpServer, {
 
 // change this using old project config
 
-io.on("connection", wss);
+wss(io);
