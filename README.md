@@ -6,6 +6,13 @@ Players can create a room, share a room code with a friend, and play a live ches
 
 ---
 
+## Demo
+
+https://github.com/user-attachments/assets/76901c66-816b-409f-b4a0-8c91211feec4
+
+---
+
+
 ## 🎯 Project Objective
 
 The primary goal of this project is to **understand and implement WebSockets** in a real-world scenario.
